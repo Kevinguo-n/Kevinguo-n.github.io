@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kevin Guo — AI Agent Engineering Portfolio</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --bg-soft: #11151f;
+    --card: #161b27;
+    --card-2: #1b2230;
+    --line: #273042;
+    --text: #e6e9f0;
+    --muted: #9aa4b8;
+    --faint: #6b7488;
+    --accent: #6c8cff;
+    --accent-2: #58e1c4;
+    --accent-3: #ffb86b;
+    --good: #4ade80;
+    --radius: 16px;
+    --maxw: 1080px;
+  }
+
+  * , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, rgba(108,140,255,.10), transparent 60%),
+                radial-gradient(900px 500px at -10% 10%, rgba(88,225,196,.06), transparent 55%),
+                var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ── Nav ─────────────────────────────── */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(11,14,20,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand { font-weight: 700; letter-spacing: .2px; font-size: 15px; }
+  .brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .nav-links a { color: var(--muted); font-size: 13.5px; font-weight: 500; }
+  .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+  /* ── Hero ────────────────────────────── */
+  .hero { padding: 72px 0 40px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12.5px; font-weight: 600; letter-spacing: .4px;
+    color: var(--accent-2); background: rgba(88,225,196,.08);
+    border: 1px solid rgba(88,225,196,.25);
+    padding: 5px 12px; border-radius: 999px; margin-bottom: 22px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); box-shadow: 0 0 10px var(--accent-2); }
+  h1.hero-title {
+    font-size: clamp(34px, 5.5vw, 56px); line-height: 1.05;
+    font-weight: 800; letter-spacing: -1px; margin-bottom: 18px;
+  }
+  h1.hero-title .grad {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede { font-size: clamp(16px, 2vw, 19px); color: var(--muted); max-width: 760px; }
+  .lede strong { color: var(--text); font-weight: 600; }
+  .hero-meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px 18px; font-size: 14px; color: var(--faint); }
+  .hero-meta a { color: var(--muted); }
+
+  /* ── Stat band ───────────────────────── */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin: 40px 0 8px;
+  }
+  .stat {
+    background: linear-gradient(180deg, var(--card-2), var(--card));
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px 18px;
+  }
+  .stat .num { font-size: 26px; font-weight: 800; letter-spacing: -.5px; }
+  .stat .num .u { color: var(--accent); }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+
+  /* ── Sections ────────────────────────── */
+  section { padding: 56px 0 8px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .sec-kicker { font-size: 12.5px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
+  h2.sec-title { font-size: clamp(24px, 3.5vw, 32px); font-weight: 800; letter-spacing: -.5px; }
+  .sec-sub { color: var(--muted); margin: 6px 0 28px; max-width: 760px; }
+
+  /* ── Project cards ───────────────────── */
+  .proj {
+    background: linear-gradient(180deg, var(--card-2), var(--card));
+    border: 1px solid var(--line); border-radius: 20px;
+    padding: 28px; margin-bottom: 22px;
+    position: relative; overflow: hidden;
+  }
+  .proj::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  }
+  .proj-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .proj-title { font-size: 20px; font-weight: 750; letter-spacing: -.3px; }
+  .proj-tag {
+    font-size: 11.5px; font-weight: 600; color: var(--accent-2);
+    background: rgba(88,225,196,.08); border: 1px solid rgba(88,225,196,.22);
+    padding: 4px 11px; border-radius: 999px; white-space: nowrap;
+  }
+  .proj-role { color: var(--faint); font-size: 13px; margin-top: 2px; }
+
+  .pq {
+    display: grid; grid-template-columns: 90px 1fr; gap: 4px 16px;
+    margin-top: 18px; font-size: 14.5px;
+  }
+  .pq dt { color: var(--accent); font-weight: 700; font-size: 12.5px; letter-spacing: .5px; padding-top: 2px; text-transform: uppercase; }
+  .pq dd { color: var(--muted); margin-bottom: 12px; }
+  .pq dd strong { color: var(--text); font-weight: 600; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+  .chip {
+    font-size: 12px; color: var(--muted);
+    background: var(--bg-soft); border: 1px solid var(--line);
+    padding: 4px 10px; border-radius: 8px;
+  }
+
+  .impact {
+    display: flex; flex-wrap: wrap; gap: 18px 28px; margin-top: 18px;
+    padding-top: 18px; border-top: 1px dashed var(--line);
+  }
+  .impact .i { min-width: 120px; }
+  .impact .iv { font-size: 21px; font-weight: 800; color: var(--good); letter-spacing: -.5px; }
+  .impact .il { font-size: 12.5px; color: var(--muted); }
+
+  /* ── Pipeline diagram ────────────────── */
+  .pipe {
+    margin-top: 20px; padding: 18px; background: var(--bg-soft);
+    border: 1px solid var(--line); border-radius: 14px;
+  }
+  .pipe-label { font-size: 11.5px; letter-spacing: 1.5px; color: var(--faint); text-transform: uppercase; margin-bottom: 14px; }
+  .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+  .node {
+    flex: 1; min-width: 130px;
+    background: var(--card-2); border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .node .n-step { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: .5px; }
+  .node .n-name { font-size: 14px; font-weight: 650; margin: 3px 0; }
+  .node .n-desc { font-size: 12px; color: var(--muted); line-height: 1.45; }
+  .arrow { display: flex; align-items: center; color: var(--accent); font-size: 20px; padding: 0 8px; }
+
+  /* ── Two column / eval ───────────────── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .panel {
+    background: linear-gradient(180deg, var(--card-2), var(--card));
+    border: 1px solid var(--line); border-radius: 18px; padding: 24px;
+  }
+  .panel h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .panel p.sub { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+  .feat { list-style: none; }
+  .feat li { position: relative; padding-left: 26px; margin-bottom: 12px; font-size: 14.5px; color: var(--muted); }
+  .feat li strong { color: var(--text); font-weight: 600; }
+  .feat li::before {
+    content: ""; position: absolute; left: 4px; top: 9px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 8px var(--accent);
+  }
+  .metric-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .metric-pill {
+    font-size: 13px; color: var(--text);
+    background: var(--bg-soft); border: 1px solid var(--line);
+    padding: 8px 13px; border-radius: 10px;
+  }
+  .metric-pill b { color: var(--accent-2); }
+
+  /* ── Foundations / DS work ───────────── */
+  .found { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .fcard {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+  }
+  .fcard .fh { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .fcard .fb { font-size: 13.5px; color: var(--muted); }
+  .fcard .fb b { color: var(--good); font-weight: 700; }
+
+  /* ── Stack ───────────────────────────── */
+  .stack { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .stack-grp h4 { font-size: 12.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .stack-grp .chips .chip { background: var(--card); }
+
+  /* ── Footer ──────────────────────────── */
+  footer { padding: 50px 0 60px; margin-top: 40px; border-top: 1px solid var(--line); color: var(--faint); font-size: 13.5px; text-align: center; }
+  footer a { color: var(--muted); }
+
+  /* ── Reveal anim ─────────────────────── */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .grid2 { grid-template-columns: 1fr; }
+    .found { grid-template-columns: 1fr; }
+    .stack { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .pq { grid-template-columns: 1fr; }
+    .pq dt { padding-top: 8px; }
+    .arrow { transform: rotate(90deg); width: 100%; justify-content: center; padding: 4px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="brand">Kevin <span>Guo</span></div>
+    <div class="nav-links">
+      <a href="#agents">Agent Systems</a>
+      <a href="#eval">Evaluation</a>
+      <a href="#foundations">DS Foundations</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> AI Agent Engineering &middot; Production LLM Systems</div>
+    <h1 class="hero-title">I build <span class="grad">multi-agent systems</span><br>that ship and stay in production.</h1>
+    <p class="lede">
+      Senior Data / AI Scientist who turns ambiguous, high-stakes enterprise workflows into
+      <strong>LLM agent systems</strong> &mdash; orchestration, tool-use, RAG, and the
+      <strong>evaluation frameworks</strong> that keep them trustworthy. Five years across
+      <strong>Python, data engineering, and applied ML</strong>, with a track record of agents in
+      <strong>daily production use</strong> by a real team, not demos.
+    </p>
+    <div class="hero-meta">
+      <span>📍 Woodland Hills, CA</span>
+      <span><a href="mailto:zijianguo83@gmail.com">zijianguo83@gmail.com</a></span>
+      <span><a href="https://www.linkedin.com/in/zijian-guo-84a9a824b/">LinkedIn</a></span>
+      <span>+1 (626) 996-2122</span>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat"><div class="num">4<span class="u">+</span></div><div class="lbl">Agent systems built &amp; deployed</div></div>
+      <div class="stat"><div class="num">20<span class="u">min&rarr;20s</span></div><div class="lbl">Investigation time, automated</div></div>
+      <div class="stat"><div class="num">~2<span class="u">FTE</span></div><div class="lbl">Analyst capacity freed</div></div>
+      <div class="stat"><div class="num">20K<span class="u">+</span></div><div class="lbl">Daily transactions under agent monitoring</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- AGENTS -->
+<section id="agents">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">01 — Core Work</span>
+    </div>
+    <h2 class="sec-title reveal">AI Agent Systems I Built</h2>
+    <p class="sec-sub reveal">
+      Self-initiated, then adopted as team standard. Each system pairs an LLM orchestration layer
+      with real tool-use against internal data, and is governed by an explicit evaluation harness.
+      Framed below in transferable terms &mdash; the patterns move to any domain.
+    </p>
+
+    <!-- Project 1: 3-agent orchestration -->
+    <article class="proj reveal">
+      <div class="proj-top">
+        <div>
+          <div class="proj-title">3-Agent Triage &amp; Root-Cause Orchestrator</div>
+          <div class="proj-role">Designed, built, and operated &middot; in daily production</div>
+        </div>
+        <span class="proj-tag">Multi-Agent Orchestration</span>
+      </div>
+
+      <dl class="pq">
+        <dt>Problem</dt>
+        <dd>A 10-person team spent <strong>~20 minutes per case</strong> manually reconstructing why an automated decision fired &mdash; hopping between chat, the data lake, and a case tracker by hand. High volume, repetitive, judgment-light.</dd>
+        <dt>Approach</dt>
+        <dd>A <strong>3-agent pipeline</strong> orchestrated as a <strong>9-state workflow machine</strong>: an intent classifier scopes whether a request is automatable, an investigator agent queries the data lake via <strong>async tool-use</strong> to reconstruct the decision trace, and a synthesizer writes a plain-language explanation back to the team and updates the case tracker. Scheduled and retried via <strong>Airflow</strong>.</dd>
+        <dt>Feedback</dt>
+        <dd>Recurring root-cause patterns are <strong>fed back into model monitoring and recalibration</strong> &mdash; the agent system doubles as an always-on data-quality sensor.</dd>
+      </dl>
+
+      <div class="pipe">
+        <div class="pipe-label">Pipeline</div>
+        <div class="flow">
+          <div class="node">
+            <div class="n-step">AGENT 1</div>
+            <div class="n-name">Intent Classifier</div>
+            <div class="n-desc">Routes in-scope cases to automation; sends ambiguous/general questions to a human.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+          <div class="node">
+            <div class="n-step">AGENT 2</div>
+            <div class="n-name">Investigator</div>
+            <div class="n-desc">Tool-use against the data lake; reconstructs the full decision trace &amp; root cause.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+          <div class="node">
+            <div class="n-step">AGENT 3</div>
+            <div class="n-name">Synthesizer</div>
+            <div class="n-desc">Writes the explanation, posts to chat, updates the case tracker — closes the loop.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips">
+        <span class="chip">Claude SDK</span><span class="chip">OpenAI SDK</span>
+        <span class="chip">Async tool-use</span><span class="chip">9-state FSM</span>
+        <span class="chip">Slack API</span><span class="chip">Databricks SDK</span>
+        <span class="chip">Airtable API</span><span class="chip">Airflow</span>
+      </div>
+
+      <div class="impact">
+        <div class="i"><div class="iv">20min &rarr; 20s</div><div class="il">per-case turnaround</div></div>
+        <div class="i"><div class="iv">~1 FTE</div><div class="il">capacity returned to the team</div></div>
+        <div class="i"><div class="iv">End-to-end</div><div class="il">intent → investigate → respond</div></div>
+      </div>
+    </article>
+
+    <!-- Project 2: multi-source assessment agent -->
+    <article class="proj reveal">
+      <div class="proj-top">
+        <div>
+          <div class="proj-title">Multi-Source Assessment Agent</div>
+          <div class="proj-role">Built &amp; shipped &middot; human-in-the-loop by design</div>
+        </div>
+        <span class="proj-tag">Tool-Use &middot; Data Fusion</span>
+      </div>
+
+      <dl class="pq">
+        <dt>Problem</dt>
+        <dd>Each decision required an analyst to manually gather and weigh signals from <strong>several independent data sources</strong> plus third-party providers &mdash; slow and inconsistent across people.</dd>
+        <dt>Approach</dt>
+        <dd>An agent that calls multiple tools to pull <strong>identity, transaction, and dispute signals</strong> alongside third-party data, fuses them into a <strong>structured assessment</strong> (JSON-schema output) with explicit reasoning, then <strong>auto-clears clear-cut cases and escalates ambiguous ones</strong> to a human. Built as triage, not replacement &mdash; the human baseline stays the ceiling for hard calls.</dd>
+      </dl>
+
+      <div class="chips">
+        <span class="chip">Function calling</span><span class="chip">Structured outputs (JSON Schema)</span>
+        <span class="chip">Multi-source fusion</span><span class="chip">3rd-party API integration</span>
+        <span class="chip">Human-in-the-loop</span>
+      </div>
+
+      <div class="impact">
+        <div class="i"><div class="iv">30+ / day</div><div class="il">cases auto-cleared</div></div>
+        <div class="i"><div class="iv">~15 hrs / day</div><div class="il">analyst time freed for hard calls</div></div>
+        <div class="i"><div class="iv">Triage-safe</div><div class="il">ambiguous cases escalate, not guess</div></div>
+      </div>
+    </article>
+
+    <!-- Project 3: reusable skills library -->
+    <article class="proj reveal">
+      <div class="proj-top">
+        <div>
+          <div class="proj-title">Reusable LLM Skills Library</div>
+          <div class="proj-role">Self-built, then adopted across the team</div>
+        </div>
+        <span class="proj-tag">Agent Skills &middot; RAG &middot; Platform</span>
+      </div>
+
+      <dl class="pq">
+        <dt>Problem</dt>
+        <dd>Analysts re-ran the same data-pulling and analysis workflows every day, each in their own ad-hoc way &mdash; no shared, reliable tooling.</dd>
+        <dt>Approach</dt>
+        <dd>A library of <strong>5 reusable LLM "skills"</strong> packaging common workflows (data-lake querying, log/query automation, escalation triage, return/anomaly analysis, and experiment analysis) so anyone can invoke them in natural language. Built on <strong>Claude + GPT SDKs</strong> with <strong>RAG</strong> and <strong>async tool-use</strong>, distributed as standard tooling.</dd>
+        <dt>Adoption</dt>
+        <dd>In <strong>active daily use</strong> by the 10-person team, monitoring <strong>20K+ daily transactions</strong>. Turned one person's automation into a team capability.</dd>
+      </dl>
+
+      <div class="chips">
+        <span class="chip">Anthropic Claude SDK</span><span class="chip">OpenAI SDK</span>
+        <span class="chip">RAG</span><span class="chip">Async tool-use</span>
+        <span class="chip">Reusable skill packaging</span><span class="chip">Prompt engineering</span>
+      </div>
+
+      <div class="impact">
+        <div class="i"><div class="iv">5 skills</div><div class="il">shared, reusable workflows</div></div>
+        <div class="i"><div class="iv">Team standard</div><div class="il">daily use, 10-person team</div></div>
+        <div class="i"><div class="iv">20K+ / day</div><div class="il">transactions monitored</div></div>
+      </div>
+    </article>
+
+    <!-- Project 4: self-calibrating scoring service -->
+    <article class="proj reveal">
+      <div class="proj-top">
+        <div>
+          <div class="proj-title">Self-Calibrating Scoring Service</div>
+          <div class="proj-role">Built end-to-end &middot; Python / Flask</div>
+        </div>
+        <span class="proj-tag">Applied ML &middot; Service</span>
+      </div>
+
+      <dl class="pq">
+        <dt>Problem</dt>
+        <dd>Three independent anomaly signals needed to be combined into a single decision, and static thresholds drifted as behavior changed over time.</dd>
+        <dt>Approach</dt>
+        <dd>A <strong>Flask service</strong> that fuses three scoring signals and <strong>self-calibrates its thresholds</strong> against recent outcome rates &mdash; no manual retuning. Exposed over REST for downstream consumers.</dd>
+      </dl>
+
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">Flask</span><span class="chip">REST API</span>
+        <span class="chip">Signal fusion</span><span class="chip">Adaptive thresholds</span>
+      </div>
+
+      <div class="impact">
+        <div class="i"><div class="iv">56.2%</div><div class="il">precision</div></div>
+        <div class="i"><div class="iv">0.04%</div><div class="il">false-positive rate</div></div>
+        <div class="i"><div class="iv">~1M / qtr</div><div class="il">transactions scored</div></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- EVAL -->
+<section id="eval">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-kicker">02 — Rigor</span></div>
+    <h2 class="sec-title reveal">How I Keep Agents Trustworthy</h2>
+    <p class="sec-sub reveal">
+      Shipping an agent is the easy half. The hard half is proving it stays correct as prompts,
+      models, and data drift. Every system above is governed by an explicit evaluation harness.
+    </p>
+
+    <div class="grid2">
+      <div class="panel reveal">
+        <h3>Evaluation Framework</h3>
+        <p class="sub">Golden sets + LLM-as-judge, scored on four axes</p>
+        <ul class="feat">
+          <li><strong>Faithfulness</strong> — does the output stay grounded in the retrieved evidence, with no invented facts?</li>
+          <li><strong>Hallucination rate</strong> — explicitly measured; critical with long-context and document inputs.</li>
+          <li><strong>Completeness</strong> — staged checks that the agent covered every required step, not just the easy ones.</li>
+          <li><strong>Human-agreement</strong> — agent decisions benchmarked against expert reviewers as the ground-truth ceiling.</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3>Production Discipline</h3>
+        <p class="sub">What turns a demo into something a team relies on</p>
+        <ul class="feat">
+          <li><strong>Human-in-the-loop routing</strong> — agents handle clear-cut cases and escalate ambiguity instead of guessing.</li>
+          <li><strong>Orchestration over monoliths</strong> — specialized agents with narrow jobs, composed in a state machine.</li>
+          <li><strong>Closed feedback loop</strong> — recurring patterns flow back into model monitoring &amp; recalibration.</li>
+          <li><strong>Scheduled &amp; retried</strong> — Airflow-orchestrated pipelines with real operational handling, not one-off scripts.</li>
+        </ul>
+        <div class="metric-row" style="margin-top:16px;">
+          <span class="metric-pill"><b>Golden set</b> regression</span>
+          <span class="metric-pill"><b>LLM-as-judge</b></span>
+          <span class="metric-pill"><b>Task-completion</b> metrics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDATIONS -->
+<section id="foundations">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-kicker">03 — Foundations</span></div>
+    <h2 class="sec-title reveal">Data Science Under the Agents</h2>
+    <p class="sec-sub reveal">
+      The agent work sits on a foundation of applied ML, experimentation, and data engineering.
+      A few representative results, kept brief.
+    </p>
+
+    <div class="found">
+      <div class="fcard reveal">
+        <div class="fh">Ensemble ML in production</div>
+        <div class="fb">Deployed an <b>XGBoost + Random Forest</b> ensemble with a cost-sensitive objective calibrated to outcome rates across segments &mdash; <b>$50M+/month</b> loss reduction with no measurable approval-rate impact.</div>
+      </div>
+      <div class="fcard reveal">
+        <div class="fh">Causal experimentation</div>
+        <div class="fb">Rebuilt the <b>A/B framework</b> to close a control-group interference bug; added <b>CUPED</b> variance reduction and a regression-discontinuity design at decision thresholds &mdash; <b>$15M/quarter</b> impact with cleaner attribution.</div>
+      </div>
+      <div class="fcard reveal">
+        <div class="fh">Product analytics</div>
+        <div class="fb">Defined a custom <b>activation metric</b> separating policy-driven from friction-driven churn; cut churn <b>75%</b> on a new flow and modeled approval-vs-revenue tradeoffs that unlocked <b>13% more users</b>.</div>
+      </div>
+      <div class="fcard reveal">
+        <div class="fh">Data engineering</div>
+        <div class="fb">Built <b>SQL &amp; PySpark ETL</b> on Databricks aggregating <b>1B+ event records</b> across merchant, transaction, wallet, and bank layers into analysis-ready tables.</div>
+      </div>
+      <div class="fcard reveal">
+        <div class="fh">Early GenAI text mining</div>
+        <div class="fb">Built a <b>GPT-4 / 3.5</b> few-shot pipeline extracting structured fields from unstructured agent notes &mdash; an early production use of LLMs for operational data extraction.</div>
+      </div>
+      <div class="fcard reveal">
+        <div class="fh">Efficiency analytics</div>
+        <div class="fb">A deduplication algorithm over <b>150K+</b> activities cut annual case volume by <b>16,000</b> (~$120K savings); rule optimizations circumvented <b>~$952K</b> in losses in 2 months.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-kicker">04 — Toolbox</span></div>
+    <h2 class="sec-title reveal">Technical Stack</h2>
+    <p class="sec-sub reveal">Hands-on, day-to-day. Not a buzzword list.</p>
+
+    <div class="stack">
+      <div class="stack-grp reveal">
+        <h4>AI &amp; LLM Engineering</h4>
+        <div class="chips">
+          <span class="chip">Anthropic Claude SDK</span><span class="chip">OpenAI SDK</span>
+          <span class="chip">Multi-Agent Orchestration</span><span class="chip">MCP Servers</span>
+          <span class="chip">Tool Use / Function Calling</span><span class="chip">RAG</span>
+          <span class="chip">LangChain</span><span class="chip">LangGraph</span>
+          <span class="chip">Structured Outputs (JSON Schema)</span>
+          <span class="chip">LLM-as-Judge &amp; Golden-Set Eval</span>
+          <span class="chip">Advanced Prompt Engineering</span>
+        </div>
+      </div>
+      <div class="stack-grp reveal">
+        <h4>Data Science &amp; ML</h4>
+        <div class="chips">
+          <span class="chip">XGBoost</span><span class="chip">Random Forest</span>
+          <span class="chip">scikit-learn</span><span class="chip">A/B &amp; Bayesian A/B Testing</span>
+          <span class="chip">Causal Inference</span><span class="chip">CUPED</span>
+          <span class="chip">Regression Discontinuity</span><span class="chip">Funnel &amp; Cohort Analysis</span>
+          <span class="chip">Anomaly Detection</span><span class="chip">Clustering</span>
+          <span class="chip">NLP / Text Mining</span>
+        </div>
+      </div>
+      <div class="stack-grp reveal">
+        <h4>Engineering &amp; Platforms</h4>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">asyncio</span><span class="chip">Flask</span>
+          <span class="chip">PySpark</span><span class="chip">Pandas</span>
+          <span class="chip">REST APIs</span><span class="chip">Airflow</span>
+          <span class="chip">Java</span><span class="chip">Docker</span><span class="chip">Git</span>
+        </div>
+      </div>
+      <div class="stack-grp reveal">
+        <h4>Data &amp; Viz</h4>
+        <div class="chips">
+          <span class="chip">SQL (window fns, CTEs, joins)</span>
+          <span class="chip">Databricks / Spark</span><span class="chip">Snowflake</span>
+          <span class="chip">Redshift</span><span class="chip">Databricks SDK</span>
+          <span class="chip">Tableau</span><span class="chip">PowerBI</span><span class="chip">Splunk SPL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer id="contact">
+  <div class="wrap">
+    <p style="font-size:18px;color:var(--text);font-weight:700;margin-bottom:8px;">Kevin Guo</p>
+    <p>Senior Data / AI Scientist &middot; AI Agent Engineering</p>
+    <p style="margin-top:14px;">
+      <a href="mailto:zijianguo83@gmail.com">zijianguo83@gmail.com</a> &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/zijian-guo-84a9a824b/">LinkedIn</a> &nbsp;·&nbsp;
+      +1 (626) 996-2122
+    </p>
+    <p style="margin-top:18px;color:var(--faint);font-size:12px;">M.S. Analytics, USC &middot; BEng, University of Nottingham</p>
+  </div>
+</footer>
+
+<script>
+  // Lightweight scroll reveal — no dependencies, works offline.
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
