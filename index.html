@@ -229,6 +229,7 @@
     <div class="brand">Kevin <span>Guo</span></div>
     <div class="nav-links">
       <a href="#agents">Agent Systems</a>
+      <a href="#abuse">Abuse Detection</a>
       <a href="#eval">Evaluation</a>
       <a href="#foundations">DS Foundations</a>
       <a href="#stack">Stack</a>
@@ -428,10 +429,86 @@
   </div>
 </section>
 
+<!-- ABUSE DETECTION CASE STUDY -->
+<section id="abuse">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-kicker">02 — Case Study</span>
+    </div>
+    <h2 class="sec-title reveal">Detecting a Coordinated Account-Takeover Ring</h2>
+    <p class="sec-sub reveal">
+      A deep-dive into one high-stakes investigation: turning a faint, human-spotted pattern into a
+      deployed classifier that shut down an organized abuse ring. Framed in transferable terms &mdash;
+      the same playbook applies to any coordinated-misuse problem.
+    </p>
+
+    <article class="proj reveal">
+      <div class="proj-top">
+        <div>
+          <div class="proj-title">Coordinated Account-Takeover (ATO) Ring Detection</div>
+          <div class="proj-role">Investigated, modeled &amp; deployed &middot; end-to-end owner</div>
+        </div>
+        <span class="proj-tag">Coordinated Abuse &middot; Classifier</span>
+      </div>
+
+      <dl class="pq">
+        <dt>Signal</dt>
+        <dd>Losses and chargebacks spiked across several product lines at once. Human reviewers spotted a faint pattern by eye &mdash; clusters of <strong>old, long-idle accounts</strong>, low-reputation email domains, and <strong>reused identity details / fake names</strong> &mdash; but there was no systematic way to separate the ring from legitimate activity.</dd>
+        <dt>Investigation</dt>
+        <dd>I pulled <strong>three weeks of loss data across products</strong> and ran a cross-dimensional analysis fusing <strong>transaction, profile-edit, and device</strong> signals. Two coordinated behaviors emerged: (1) <strong>dormant accounts</strong> &mdash; idle &gt;6 months, likely taken over long before and held in reserve &mdash; suddenly reactivating with <strong>wallet changes adding new payee bank accounts</strong>; and (2) a tight <strong>device/IP footprint</strong> &mdash; a handful of overseas IP clusters where <strong>one IP operated many accounts</strong>, funneling transfers into a few small banks.</dd>
+        <dt>Model</dt>
+        <dd>I reduced <strong>millions of rows to a few thousand</strong> suspect entities, engineered features, and trained an <strong>XGBoost classifier</strong> whose most predictive signals were <strong>shared-IP count across user IDs</strong> and <strong>account / device tenure</strong>. Tuned the threshold around the <strong>false-positive / false-negative tradeoff</strong> so legitimate dormant-account reactivations weren&rsquo;t caught in the net. Partnered with engineering to productionize the signals via <strong>Kafka + DynamoDB</strong> real-time aggregation.</dd>
+      </dl>
+
+      <div class="pipe">
+        <div class="pipe-label">Investigation → Production</div>
+        <div class="flow">
+          <div class="node">
+            <div class="n-step">STEP 1</div>
+            <div class="n-name">Pattern Signal</div>
+            <div class="n-desc">Reviewers flag faint clusters: aged accounts, low-rep domains, reused identities.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+          <div class="node">
+            <div class="n-step">STEP 2</div>
+            <div class="n-name">Cross-Dim Investigation</div>
+            <div class="n-desc">Fuse txn + profile-edit + device data; millions of rows → a few thousand suspects.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+          <div class="node">
+            <div class="n-step">STEP 3</div>
+            <div class="n-name">XGBoost Classifier</div>
+            <div class="n-desc">Shared-IP-across-IDs + device tenure as top signals; FP/FN-tuned threshold.</div>
+          </div>
+          <div class="arrow">&rarr;</div>
+          <div class="node">
+            <div class="n-step">STEP 4</div>
+            <div class="n-name">Real-Time Deploy</div>
+            <div class="n-desc">Signals aggregated via Kafka + DynamoDB and scored in production.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips">
+        <span class="chip">XGBoost</span><span class="chip">Feature engineering</span>
+        <span class="chip">Coordinated-abuse / ring detection</span><span class="chip">Account takeover</span>
+        <span class="chip">Device &amp; IP fingerprinting</span><span class="chip">Shared-entity signals</span>
+        <span class="chip">FP / FN tradeoff</span><span class="chip">Kafka</span><span class="chip">DynamoDB</span>
+      </div>
+
+      <div class="impact">
+        <div class="i"><div class="iv">$124K / week</div><div class="il">loss reduction after deploy</div></div>
+        <div class="i"><div class="iv">millions &rarr; thousands</div><div class="il">rows triaged to suspect entities</div></div>
+        <div class="i"><div class="iv">FP/FN-tuned</div><div class="il">spares legit dormant reactivations</div></div>
+      </div>
+    </article>
+  </div>
+</section>
+
 <!-- EVAL -->
 <section id="eval">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-kicker">02 — Rigor</span></div>
+    <div class="sec-head reveal"><span class="sec-kicker">03 — Rigor</span></div>
     <h2 class="sec-title reveal">How I Keep Agents Trustworthy</h2>
     <p class="sec-sub reveal">
       Shipping an agent is the easy half. The hard half is proving it stays correct as prompts,
@@ -471,7 +548,7 @@
 <!-- FOUNDATIONS -->
 <section id="foundations">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-kicker">03 — Foundations</span></div>
+    <div class="sec-head reveal"><span class="sec-kicker">04 — Foundations</span></div>
     <h2 class="sec-title reveal">Data Science Under the Agents</h2>
     <p class="sec-sub reveal">
       The agent work sits on a foundation of applied ML, experimentation, and data engineering.
@@ -510,7 +587,7 @@
 <!-- STACK -->
 <section id="stack">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-kicker">04 — Toolbox</span></div>
+    <div class="sec-head reveal"><span class="sec-kicker">05 — Toolbox</span></div>
     <h2 class="sec-title reveal">Technical Stack</h2>
     <p class="sec-sub reveal">Hands-on, day-to-day. Not a buzzword list.</p>
 
