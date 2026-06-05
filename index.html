@@ -229,7 +229,7 @@
     <div class="brand">Kevin <span>Guo</span></div>
     <div class="nav-links">
       <a href="#agents">Agent Systems</a>
-      <a href="#abuse">Abuse Detection</a>
+      <a href="#case">ATO Case Study</a>
       <a href="#eval">Evaluation</a>
       <a href="#foundations">DS Foundations</a>
       <a href="#stack">Stack</a>
@@ -244,11 +244,12 @@
     <div class="eyebrow"><span class="dot"></span> AI Agent Engineering &middot; Production LLM Systems</div>
     <h1 class="hero-title">I build <span class="grad">multi-agent systems</span><br>that ship and stay in production.</h1>
     <p class="lede">
-      Senior Data / AI Scientist who turns ambiguous, high-stakes enterprise workflows into
-      <strong>LLM agent systems</strong> &mdash; orchestration, tool-use, RAG, and the
-      <strong>evaluation frameworks</strong> that keep them trustworthy. Five years across
-      <strong>Python, data engineering, and applied ML</strong>, with a track record of agents in
-      <strong>daily production use</strong> by a real team, not demos.
+      Senior Decision Scientist who turns ambiguous, high-stakes enterprise workflows into
+      <strong>LLM agent systems</strong> &mdash; orchestration, RAG, tool-use, and the
+      <strong>evaluation &amp; guardrail frameworks</strong> that keep them trustworthy &mdash; on top of
+      <strong>production ML, experimentation, and data engineering</strong> across
+      <strong>$40B+/yr in payment volume</strong>. Track record of agents in
+      <strong>daily production use by a 50-person team</strong>, not demos.
     </p>
     <div class="hero-meta">
       <span>📍 Open to relocation &amp; remote</span>
@@ -258,10 +259,10 @@
     </div>
 
     <div class="stats reveal">
-      <div class="stat"><div class="num">4<span class="u">+</span></div><div class="lbl">Agent systems built &amp; deployed</div></div>
-      <div class="stat"><div class="num">20<span class="u">min&rarr;20s</span></div><div class="lbl">Investigation time, automated</div></div>
-      <div class="stat"><div class="num">~2<span class="u">FTE</span></div><div class="lbl">Analyst capacity freed</div></div>
-      <div class="stat"><div class="num">20K<span class="u">+</span></div><div class="lbl">Daily transactions under agent monitoring</div></div>
+      <div class="stat"><div class="num">$9.4<span class="u">M/yr</span></div><div class="lbl">ATO loss prevented (DiD-measured)</div></div>
+      <div class="stat"><div class="num">20min<span class="u">&rarr;20s</span></div><div class="lbl">Case investigation, automated</div></div>
+      <div class="stat"><div class="num">$40<span class="u">B+/yr</span></div><div class="lbl">Payment volume under his models</div></div>
+      <div class="stat"><div class="num">50<span class="u">-person</span></div><div class="lbl">Team on his AI tools daily</div></div>
     </div>
   </div>
 </header>
@@ -276,26 +277,26 @@
     <p class="sec-sub reveal">
       Self-initiated, then adopted as team standard. Each system pairs an LLM orchestration layer
       with real tool-use against internal data, and is governed by an explicit evaluation harness.
-      Framed below in transferable terms &mdash; the patterns move to any domain.
+      Framed in transferable terms &mdash; the patterns move to any domain.
     </p>
 
     <!-- Project 1: 3-agent orchestration -->
     <article class="proj reveal">
       <div class="proj-top">
         <div>
-          <div class="proj-title">3-Agent Triage &amp; Root-Cause Orchestrator</div>
-          <div class="proj-role">Designed, built, and operated &middot; in daily production</div>
+          <div class="proj-title">3-Agent Decline-Resolution &amp; Root-Cause Orchestrator</div>
+          <div class="proj-role">Solo-built &amp; operated &middot; daily production, 20-person team</div>
         </div>
         <span class="proj-tag">Multi-Agent Orchestration</span>
       </div>
 
       <dl class="pq">
         <dt>Problem</dt>
-        <dd>A 10-person team spent <strong>~20 minutes per case</strong> manually reconstructing why an automated decision fired &mdash; hopping between chat, the data lake, and a case tracker by hand. High volume, repetitive, judgment-light.</dd>
+        <dd>Wrongly-declined ("insulted") customers reach out across Jira / Slack / case-notes, and a team spent <strong>20&ndash;30 minutes per case</strong> manually reconstructing <strong>which step of the risk pipeline</strong> fired and why &mdash; high volume, judgment-light.</dd>
         <dt>Approach</dt>
-        <dd>A <strong>3-agent pipeline</strong> orchestrated as a <strong>9-state workflow machine</strong>: an intent classifier scopes whether a request is automatable, an investigator agent queries the data lake via <strong>async tool-use</strong> to reconstruct the decision trace, and a synthesizer writes a plain-language explanation back to the team and updates the case tracker. Scheduled and retried via <strong>Airflow</strong>.</dd>
-        <dt>Feedback</dt>
-        <dd>Recurring root-cause patterns are <strong>fed back into model monitoring and recalibration</strong> &mdash; the agent system doubles as an always-on data-quality sensor.</dd>
+        <dd>A <strong>3-agent pipeline</strong> built with <strong>Graph-RAG / Self-RAG</strong>, <strong>semantic routing</strong>, <strong>guardrails</strong> and <strong>self-correction</strong> (Claude + GPT): an intake agent routes by which risk step caused the insult and writes structured JSON to Airtable; an investigator agent walks a <strong>knowledge graph of every checkpoint model</strong> and queries the data lake with <strong>Splunk-log fallback</strong> to reconstruct the full decision trace; an analytics agent mines false-positive patterns and auto-generates QuickSight / HTML reports. Scheduled via <strong>Airflow</strong>.</dd>
+        <dt>Insight</dt>
+        <dd>The analytics agent surfaced a <strong>mid-value-biller insult gap</strong>; the targeting fix it proposed was adopted and <strong>A/B-validated</strong>.</dd>
       </dl>
 
       <div class="pipe">
@@ -303,203 +304,178 @@
         <div class="flow">
           <div class="node">
             <div class="n-step">AGENT 1</div>
-            <div class="n-name">Intent Classifier</div>
-            <div class="n-desc">Routes in-scope cases to automation; sends ambiguous/general questions to a human.</div>
+            <div class="n-name">Intake &amp; Routing</div>
+            <div class="n-desc">Semantic routing by which risk step caused the insult; structured JSON to Airtable.</div>
           </div>
           <div class="arrow">&rarr;</div>
           <div class="node">
             <div class="n-step">AGENT 2</div>
-            <div class="n-name">Investigator</div>
-            <div class="n-desc">Tool-use against the data lake; reconstructs the full decision trace &amp; root cause.</div>
+            <div class="n-name">Model Investigator</div>
+            <div class="n-desc">Knowledge-graph + data-lake tool-use, Splunk-log fallback; reconstructs the full decision trace &amp; compliance-aware remediation.</div>
           </div>
           <div class="arrow">&rarr;</div>
           <div class="node">
             <div class="n-step">AGENT 3</div>
-            <div class="n-name">Synthesizer</div>
-            <div class="n-desc">Writes the explanation, posts to chat, updates the case tracker — closes the loop.</div>
+            <div class="n-name">Analytics &amp; Insight</div>
+            <div class="n-desc">Mines FP patterns, recalibrates by recent model changes, auto-builds QuickSight / HTML dashboards.</div>
           </div>
         </div>
       </div>
 
       <div class="chips">
         <span class="chip">Claude SDK</span><span class="chip">OpenAI SDK</span>
-        <span class="chip">Async tool-use</span><span class="chip">9-state FSM</span>
-        <span class="chip">Slack API</span><span class="chip">Databricks SDK</span>
-        <span class="chip">Airtable API</span><span class="chip">Airflow</span>
+        <span class="chip">Graph-RAG / Self-RAG</span><span class="chip">Semantic Routing</span>
+        <span class="chip">Guardrails &amp; Self-Correction</span><span class="chip">Splunk fallback</span>
+        <span class="chip">Airtable</span><span class="chip">Airflow</span><span class="chip">QuickSight</span>
       </div>
 
       <div class="impact">
-        <div class="i"><div class="iv">20min &rarr; 20s</div><div class="il">per-case turnaround</div></div>
-        <div class="i"><div class="iv">~1 FTE</div><div class="il">capacity returned to the team</div></div>
-        <div class="i"><div class="iv">End-to-end</div><div class="il">intent → investigate → respond</div></div>
+        <div class="i"><div class="iv">20&ndash;30min &rarr; 20s</div><div class="il">per-case turnaround</div></div>
+        <div class="i"><div class="iv">$70&ndash;90K / mo</div><div class="il">from segment insight (A/B-measured)</div></div>
+        <div class="i"><div class="iv">4% &rarr; 3%</div><div class="il">insult-driven churn, mid-value billers</div></div>
       </div>
     </article>
 
-    <!-- Project 2: multi-source assessment agent -->
+    <!-- Project 2: 4-agent assessment + evaluation -->
     <article class="proj reveal">
       <div class="proj-top">
         <div>
-          <div class="proj-title">Multi-Source Assessment Agent</div>
-          <div class="proj-role">Built &amp; shipped &middot; human-in-the-loop by design</div>
+          <div class="proj-title">4-Agent Assessment System with RAGAS Evaluation</div>
+          <div class="proj-role">Solo-built &middot; human-in-the-loop &middot; ground-truth validated</div>
         </div>
-        <span class="proj-tag">Tool-Use &middot; Data Fusion</span>
+        <span class="proj-tag">LLM Evaluation &middot; Guardrails</span>
       </div>
 
       <dl class="pq">
         <dt>Problem</dt>
-        <dd>Each decision required an analyst to manually gather and weigh signals from <strong>several independent data sources</strong> plus third-party providers &mdash; slow and inconsistent across people.</dd>
+        <dd>The rule engine auto-decides clear-good / clear-bad; the <strong>grey-zone "review" cases</strong> &mdash; the hard ones &mdash; needed an analyst to manually gather and weigh signals across <strong>several internal sources plus third-party vendors</strong>, slow and inconsistent.</dd>
         <dt>Approach</dt>
-        <dd>An agent that calls multiple tools to pull <strong>identity, transaction, and dispute signals</strong> alongside third-party data, fuses them into a <strong>structured assessment</strong> (JSON-schema output) with explicit reasoning, then <strong>auto-clears clear-cut cases and escalates ambiguous ones</strong> to a human. Built as triage, not replacement &mdash; the human baseline stays the ceiling for hard calls.</dd>
+        <dd>Four agents review each grey-zone case from independent angles &mdash; <strong>KYB/KYC web-evidence</strong>, a <strong>linked-merchant graph</strong> (shared SSN / bank / payee), and <strong>device / ATO</strong> signals &mdash; under a self-authored <strong>RAGAS-based Judge agent</strong> (faithfulness, answer- &amp; context-relevance) that prevents fabrication and standard-drift, plus <strong>compliance hard rules</strong>. Outputs an approve / ban / need-human <strong>report to a human</strong> &mdash; triage, not replacement.</dd>
+        <dt>Validation</dt>
+        <dd>Scored against <strong>real downstream outcomes (returns / chargebacks)</strong> as ground truth &mdash; not just human agreement.</dd>
       </dl>
 
       <div class="chips">
-        <span class="chip">Function calling</span><span class="chip">Structured outputs (JSON Schema)</span>
-        <span class="chip">Multi-source fusion</span><span class="chip">3rd-party API integration</span>
-        <span class="chip">Human-in-the-loop</span>
+        <span class="chip">RAGAS</span><span class="chip">LLM-as-Judge</span>
+        <span class="chip">Knowledge Graph</span><span class="chip">Compliance Guardrails</span>
+        <span class="chip">Ground-Truth Eval</span><span class="chip">Human-in-the-loop</span>
+        <span class="chip">Claude + GPT</span>
       </div>
 
       <div class="impact">
-        <div class="i"><div class="iv">30+ / day</div><div class="il">cases auto-cleared</div></div>
-        <div class="i"><div class="iv">~15 hrs / day</div><div class="il">analyst time freed for hard calls</div></div>
-        <div class="i"><div class="iv">Triage-safe</div><div class="il">ambiguous cases escalate, not guess</div></div>
+        <div class="i"><div class="iv">60%+ accuracy</div><div class="il">vs ground truth (human ~80%), grey-zone cases</div></div>
+        <div class="i"><div class="iv">50+ / day</div><div class="il">cases auto-assessed</div></div>
+        <div class="i"><div class="iv">~5 staff</div><div class="il">risk-ops workload freed</div></div>
       </div>
     </article>
 
-    <!-- Project 3: reusable skills library -->
+    <!-- Project 3: skills suite + drift monitoring -->
     <article class="proj reveal">
       <div class="proj-top">
         <div>
-          <div class="proj-title">Reusable LLM Skills Library</div>
-          <div class="proj-role">Self-built, then adopted across the team</div>
+          <div class="proj-title">5-Skill Automation Suite + Drift-Monitoring Agent</div>
+          <div class="proj-role">Self-built, then adopted as team standard</div>
         </div>
-        <span class="proj-tag">Agent Skills &middot; RAG &middot; Platform</span>
+        <span class="proj-tag">Agent Skills &middot; MLOps</span>
       </div>
 
       <dl class="pq">
         <dt>Problem</dt>
-        <dd>Analysts re-ran the same data-pulling and analysis workflows every day, each in their own ad-hoc way &mdash; no shared, reliable tooling.</dd>
+        <dd>Analysts re-ran the same ad-hoc workflows daily, and <strong>post-deployment monitoring was manual</strong> &mdash; no shared tooling, no early warning when a model or vendor feed drifted.</dd>
         <dt>Approach</dt>
-        <dd>A library of <strong>5 reusable LLM "skills"</strong> packaging common workflows (data-lake querying, log/query automation, escalation triage, return/anomaly analysis, and experiment analysis) so anyone can invoke them in natural language. Built on <strong>Claude + GPT SDKs</strong> with <strong>RAG</strong> and <strong>async tool-use</strong>, distributed as standard tooling.</dd>
+        <dd>A library of <strong>5 reusable Cursor / Claude skills</strong> (data-lake querying, ACH-return analysis, control-group analysis, escalation triage) &mdash; including a <strong>Splunk drift-monitoring agent</strong> that reads rule deployments and <strong>git-repo logging knowledge</strong> to track post-deploy decline / insult / trigger rates and detect <strong>model-score &amp; segment drift, missing data, and vendor-feed (Sardine / LexisNexis) anomalies</strong>, auto-alerting via email / Slack.</dd>
         <dt>Adoption</dt>
-        <dd>In <strong>active daily use</strong> by the 10-person team, monitoring <strong>20K+ daily transactions</strong>. Turned one person's automation into a team capability.</dd>
+        <dd>Team standard &mdash; "a few well-built skills replace a lot of manual BI / monitoring work."</dd>
       </dl>
 
       <div class="chips">
         <span class="chip">Anthropic Claude SDK</span><span class="chip">OpenAI SDK</span>
-        <span class="chip">RAG</span><span class="chip">Async tool-use</span>
-        <span class="chip">Reusable skill packaging</span><span class="chip">Prompt engineering</span>
+        <span class="chip">RAG</span><span class="chip">Splunk SPL</span>
+        <span class="chip">Git-repo knowledge</span><span class="chip">Drift Detection</span>
+        <span class="chip">Email / Slack alerts</span>
       </div>
 
       <div class="impact">
         <div class="i"><div class="iv">5 skills</div><div class="il">shared, reusable workflows</div></div>
-        <div class="i"><div class="iv">Team standard</div><div class="il">daily use, 10-person team</div></div>
-        <div class="i"><div class="iv">20K+ / day</div><div class="il">transactions monitored</div></div>
-      </div>
-    </article>
-
-    <!-- Project 4: self-calibrating scoring service -->
-    <article class="proj reveal">
-      <div class="proj-top">
-        <div>
-          <div class="proj-title">Self-Calibrating Scoring Service</div>
-          <div class="proj-role">Built end-to-end &middot; Python / Flask</div>
-        </div>
-        <span class="proj-tag">Applied ML &middot; Service</span>
-      </div>
-
-      <dl class="pq">
-        <dt>Problem</dt>
-        <dd>Three independent anomaly signals needed to be combined into a single decision, and static thresholds drifted as behavior changed over time.</dd>
-        <dt>Approach</dt>
-        <dd>A <strong>Flask service</strong> that fuses three scoring signals and <strong>self-calibrates its thresholds</strong> against recent outcome rates &mdash; no manual retuning. Exposed over REST for downstream consumers.</dd>
-      </dl>
-
-      <div class="chips">
-        <span class="chip">Python</span><span class="chip">Flask</span><span class="chip">REST API</span>
-        <span class="chip">Signal fusion</span><span class="chip">Adaptive thresholds</span>
-      </div>
-
-      <div class="impact">
-        <div class="i"><div class="iv">56.2%</div><div class="il">precision</div></div>
-        <div class="i"><div class="iv">0.04%</div><div class="il">false-positive rate</div></div>
-        <div class="i"><div class="iv">~1M / qtr</div><div class="il">transactions scored</div></div>
+        <div class="i"><div class="iv">Post-deploy</div><div class="il">drift &amp; anomaly monitoring</div></div>
+        <div class="i"><div class="iv">Team standard</div><div class="il">replaces manual BI/monitoring</div></div>
       </div>
     </article>
 
   </div>
 </section>
 
-<!-- ABUSE DETECTION CASE STUDY -->
-<section id="abuse">
+<!-- ATO CASE STUDY -->
+<section id="case">
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="sec-kicker">02 — Case Study</span>
     </div>
-    <h2 class="sec-title reveal">Detecting a Coordinated Account-Takeover Ring</h2>
+    <h2 class="sec-title reveal">Stopping an Account-Takeover Attack in 3 Weeks</h2>
     <p class="sec-sub reveal">
-      A deep-dive into one high-stakes investigation: turning a faint, human-spotted pattern into a
-      deployed classifier that shut down an organized abuse ring. Framed in transferable terms &mdash;
-      the same playbook applies to any coordinated-misuse problem.
+      A deep-dive into one high-stakes incident: turning a weekly-monitoring anomaly into a deployed,
+      causally-measured mitigation. Framed in transferable terms &mdash; the same playbook applies to any
+      rare-event / anomalous-behavior problem.
     </p>
 
     <article class="proj reveal">
       <div class="proj-top">
         <div>
-          <div class="proj-title">Coordinated Account-Takeover (ATO) Ring Detection</div>
-          <div class="proj-role">Investigated, modeled &amp; deployed &middot; end-to-end owner</div>
+          <div class="proj-title">Account-Takeover (ATO) Attack Mitigation</div>
+          <div class="proj-role">Investigated, modeled, deployed &amp; measured &middot; end-to-end owner</div>
         </div>
-        <span class="proj-tag">Coordinated Abuse &middot; Classifier</span>
+        <span class="proj-tag">Anomaly Detection &middot; Production ML</span>
       </div>
 
       <dl class="pq">
         <dt>Signal</dt>
-        <dd>Losses and chargebacks spiked across several product lines at once. Human reviewers spotted a faint pattern by eye &mdash; clusters of <strong>old, long-idle accounts</strong>, low-reputation email domains, and <strong>reused identity details / fake names</strong> &mdash; but there was no systematic way to separate the ring from legitimate activity.</dd>
+        <dd>Weekly loss-monitoring flagged a transaction-loss / return spike concentrated in <strong>dormant-but-tenured accounts</strong> &mdash; idle accounts with good tenure and a pre-dormancy device that, once reactivated, committed fraud on their first transfers. Because they looked "established," the <strong>legacy decision-tree policy missed them entirely</strong>.</dd>
         <dt>Investigation</dt>
-        <dd>I pulled <strong>three weeks of loss data across products</strong> and ran a cross-dimensional analysis fusing <strong>transaction, profile-edit, and device</strong> signals. Two coordinated behaviors emerged: (1) <strong>dormant accounts</strong> &mdash; idle &gt;6 months, likely taken over long before and held in reserve &mdash; suddenly reactivating with <strong>wallet changes adding new payee bank accounts</strong>; and (2) a tight <strong>device/IP footprint</strong> &mdash; a handful of overseas IP clusters where <strong>one IP operated many accounts</strong>, funneling transfers into a few small banks.</dd>
+        <dd>I built a <strong>PySpark</strong> pipeline aggregating <strong>merchant, transaction, bank, and device</strong> dimensions over the incident window (millions of records), and engineered new <strong>device-footprint features</strong> &mdash; the top signal by <strong>Gini importance</strong> being a <strong>spike in distinct IPs per account</strong> over a short window. Loss concentrated in a handful of banks.</dd>
         <dt>Model</dt>
-        <dd>I reduced <strong>millions of rows to a few thousand</strong> suspect entities, engineered features, and trained an <strong>XGBoost classifier</strong> whose most predictive signals were <strong>shared-IP count across user IDs</strong> and <strong>account / device tenure</strong>. Tuned the threshold around the <strong>false-positive / false-negative tradeoff</strong> so legitimate dormant-account reactivations weren&rsquo;t caught in the net. Partnered with engineering to productionize the signals via <strong>Kafka + DynamoDB</strong> real-time aggregation.</dd>
+        <dd>Trained an <strong>XGBoost / Random Forest</strong> model and shipped a <strong>tier-differentiated policy</strong> (strictness by customer segment to protect good users) with a <strong>grey-zone MFA band</strong> (borderline scores step-up instead of hard decline). Partnered with engineering to productionize via real-time <strong>DynamoDB</strong> scoring; measured impact with a <strong>Difference-in-Differences</strong> design against a control group.</dd>
       </dl>
 
       <div class="pipe">
-        <div class="pipe-label">Investigation → Production</div>
+        <div class="pipe-label">Monitoring → Production</div>
         <div class="flow">
           <div class="node">
             <div class="n-step">STEP 1</div>
-            <div class="n-name">Pattern Signal</div>
-            <div class="n-desc">Reviewers flag faint clusters: aged accounts, low-rep domains, reused identities.</div>
+            <div class="n-name">Anomaly Signal</div>
+            <div class="n-desc">Weekly monitoring flags a loss spike in dormant-but-tenured accounts the policy missed.</div>
           </div>
           <div class="arrow">&rarr;</div>
           <div class="node">
             <div class="n-step">STEP 2</div>
-            <div class="n-name">Cross-Dim Investigation</div>
-            <div class="n-desc">Fuse txn + profile-edit + device data; millions of rows → a few thousand suspects.</div>
+            <div class="n-name">PySpark Feature Eng</div>
+            <div class="n-desc">Fuse merchant + txn + bank + device; device-footprint (distinct-IP spike) as top-Gini signal.</div>
           </div>
           <div class="arrow">&rarr;</div>
           <div class="node">
             <div class="n-step">STEP 3</div>
-            <div class="n-name">XGBoost Classifier</div>
-            <div class="n-desc">Shared-IP-across-IDs + device tenure as top signals; FP/FN-tuned threshold.</div>
+            <div class="n-name">XGBoost / RF + Policy</div>
+            <div class="n-desc">Tier-differentiated policy + grey-zone MFA band to spare legitimate users.</div>
           </div>
           <div class="arrow">&rarr;</div>
           <div class="node">
             <div class="n-step">STEP 4</div>
-            <div class="n-name">Real-Time Deploy</div>
-            <div class="n-desc">Signals aggregated via Kafka + DynamoDB and scored in production.</div>
+            <div class="n-name">Deploy + DiD</div>
+            <div class="n-desc">Real-time DynamoDB scoring; impact measured by Difference-in-Differences.</div>
           </div>
         </div>
       </div>
 
       <div class="chips">
-        <span class="chip">XGBoost</span><span class="chip">Feature engineering</span>
-        <span class="chip">Coordinated-abuse / ring detection</span><span class="chip">Account takeover</span>
-        <span class="chip">Device &amp; IP fingerprinting</span><span class="chip">Shared-entity signals</span>
-        <span class="chip">FP / FN tradeoff</span><span class="chip">Kafka</span><span class="chip">DynamoDB</span>
+        <span class="chip">XGBoost</span><span class="chip">Random Forest</span>
+        <span class="chip">Device-Footprint Features</span><span class="chip">PySpark</span>
+        <span class="chip">Grey-zone MFA</span><span class="chip">DynamoDB</span>
+        <span class="chip">Difference-in-Differences</span><span class="chip">Cost-sensitive policy</span>
       </div>
 
       <div class="impact">
-        <div class="i"><div class="iv">$124K / week</div><div class="il">loss reduction after deploy</div></div>
-        <div class="i"><div class="iv">millions &rarr; thousands</div><div class="il">rows triaged to suspect entities</div></div>
-        <div class="i"><div class="iv">FP/FN-tuned</div><div class="il">spares legit dormant reactivations</div></div>
+        <div class="i"><div class="iv">~$9.4M / yr</div><div class="il">loss prevented (within $50M/mo team-wide)</div></div>
+        <div class="i"><div class="iv">30%+ recall</div><div class="il">60%+ in-segment, at 0.15% FPR</div></div>
+        <div class="i"><div class="iv">&lt; 3 weeks</div><div class="il">spike → deployed mitigation</div></div>
       </div>
     </article>
   </div>
@@ -518,27 +494,27 @@
     <div class="grid2">
       <div class="panel reveal">
         <h3>Evaluation Framework</h3>
-        <p class="sub">Golden sets + LLM-as-judge, scored on four axes</p>
+        <p class="sub">RAGAS + ground-truth validation</p>
         <ul class="feat">
-          <li><strong>Faithfulness</strong> — does the output stay grounded in the retrieved evidence, with no invented facts?</li>
-          <li><strong>Hallucination rate</strong> — explicitly measured; critical with long-context and document inputs.</li>
-          <li><strong>Completeness</strong> — staged checks that the agent covered every required step, not just the easy ones.</li>
-          <li><strong>Human-agreement</strong> — agent decisions benchmarked against expert reviewers as the ground-truth ceiling.</li>
+          <li><strong>Faithfulness</strong> — does each agent's output stay grounded in the retrieved evidence, with no invented facts?</li>
+          <li><strong>Answer &amp; context relevance</strong> — RAGAS-scored to catch standard-drift before it skews every downstream judgment.</li>
+          <li><strong>Ground-truth validation</strong> — agent decisions scored against <strong>real downstream outcomes</strong> (returns / chargebacks), not just human agreement.</li>
+          <li><strong>Drift &amp; anomaly monitoring</strong> — post-deploy tracking of model-score / segment drift, missing data, and vendor-feed incidents with auto-alerts.</li>
         </ul>
       </div>
       <div class="panel reveal">
         <h3>Production Discipline</h3>
         <p class="sub">What turns a demo into something a team relies on</p>
         <ul class="feat">
-          <li><strong>Human-in-the-loop routing</strong> — agents handle clear-cut cases and escalate ambiguity instead of guessing.</li>
-          <li><strong>Orchestration over monoliths</strong> — specialized agents with narrow jobs, composed in a state machine.</li>
-          <li><strong>Closed feedback loop</strong> — recurring patterns flow back into model monitoring &amp; recalibration.</li>
+          <li><strong>Human-in-the-loop routing</strong> — agents report on clear cases and escalate ambiguity instead of guessing; no auto-execution on bans.</li>
+          <li><strong>Orchestration over monoliths</strong> — specialized agents with narrow jobs, composed with semantic routing &amp; self-correction.</li>
+          <li><strong>Compliance guardrails</strong> — hard rules force compliance-sensitive cases to a human regardless of model output.</li>
           <li><strong>Scheduled &amp; retried</strong> — Airflow-orchestrated pipelines with real operational handling, not one-off scripts.</li>
         </ul>
         <div class="metric-row" style="margin-top:16px;">
-          <span class="metric-pill"><b>Golden set</b> regression</span>
-          <span class="metric-pill"><b>LLM-as-judge</b></span>
-          <span class="metric-pill"><b>Task-completion</b> metrics</span>
+          <span class="metric-pill"><b>RAGAS</b> judge</span>
+          <span class="metric-pill"><b>Ground-truth</b> validation</span>
+          <span class="metric-pill"><b>Drift</b> monitoring</span>
         </div>
       </div>
     </div>
@@ -551,34 +527,34 @@
     <div class="sec-head reveal"><span class="sec-kicker">04 — Foundations</span></div>
     <h2 class="sec-title reveal">Data Science Under the Agents</h2>
     <p class="sec-sub reveal">
-      The agent work sits on a foundation of applied ML, experimentation, and data engineering.
+      The agent work sits on a foundation of applied ML, causal experimentation, and data engineering.
       A few representative results, kept brief.
     </p>
 
     <div class="found">
       <div class="fcard reveal">
-        <div class="fh">Ensemble ML in production</div>
-        <div class="fb">Deployed an <b>XGBoost + Random Forest</b> ensemble with a cost-sensitive objective calibrated to outcome rates across segments &mdash; <b>$50M+/month</b> loss reduction with no measurable approval-rate impact.</div>
-      </div>
-      <div class="fcard reveal">
         <div class="fh">Causal experimentation</div>
-        <div class="fb">Rebuilt the <b>A/B framework</b> to close a control-group interference bug; added <b>CUPED</b> variance reduction and a regression-discontinuity design at decision thresholds &mdash; <b>$15M/quarter</b> impact with cleaner attribution.</div>
+        <div class="fb">Rebuilt the <b>A/B control-group framework</b> after finding two-gate randomization held out only <b>0.25%</b> validly &mdash; a Schedule-ID "sticky" + stratified conditional holdout with <b>CUPED</b>, implemented in the production Drools engine. Coverage <b>0.25%&rarr;5&ndash;20%</b>, insult <b>6&ndash;7%&rarr;5.4%</b>.</div>
       </div>
       <div class="fcard reveal">
-        <div class="fh">Product analytics</div>
-        <div class="fb">Defined a custom <b>activation metric</b> separating policy-driven from friction-driven churn; cut churn <b>75%</b> on a new flow and modeled approval-vs-revenue tradeoffs that unlocked <b>13% more users</b>.</div>
+        <div class="fh">Product / growth modeling</div>
+        <div class="fb">Risk owner for a <b>Recurring Payments</b> launch &mdash; defined an activation metric, trained an XGBoost/GBDT model cutting loss <b>1.2&rarr;0.3 bps</b>, churn <b>3.6%&rarr;1.2%</b>, reactivating <b>23%</b> of dormant users into a <b>$2.4M/month</b> line.</div>
       </div>
       <div class="fcard reveal">
-        <div class="fh">Data engineering</div>
-        <div class="fb">Built <b>SQL &amp; PySpark ETL</b> on Databricks aggregating <b>1B+ event records</b> across merchant, transaction, wallet, and bank layers into analysis-ready tables.</div>
+        <div class="fh">Risk decision engine</div>
+        <div class="fb">Own the production <b>Drools</b> engines (DRL/KJAR) governing <b>$40B/yr</b>; replaced a non-deterministic multi-rule routing defect with a priority-based resolution across 4+ teams &mdash; ops tickets <b>&minus;17%</b>, recurrence eliminated.</div>
       </div>
       <div class="fcard reveal">
-        <div class="fh">Early GenAI text mining</div>
-        <div class="fb">Built a <b>GPT-4 / 3.5</b> few-shot pipeline extracting structured fields from unstructured agent notes &mdash; an early production use of LLMs for operational data extraction.</div>
+        <div class="fh">Data engineering at scale</div>
+        <div class="fb">Built a <b>billion-record PySpark ETL</b> on Databricks into a multi-dimensional portfolio-health dashboard adopted by a <b>20-person cross-functional team</b> &mdash; manual reporting <b>5&ndash;6 hrs/wk &rarr; ~1 hr</b>.</div>
       </div>
       <div class="fcard reveal">
         <div class="fh">Efficiency analytics</div>
-        <div class="fb">A deduplication algorithm over <b>150K+</b> activities cut annual case volume by <b>16,000</b> (~$120K savings); rule optimizations circumvented <b>~$952K</b> in losses in 2 months.</div>
+        <div class="fb">A time-windowed <b>case-aggregation</b> algorithm (PySpark/Databricks) cut auto-approval exposure <b>15%&rarr;5%</b>, saved <b>16K cases/yr (~$120K)</b>, and lifted reviewer accuracy <b>80%&rarr;87%</b>.</div>
+      </div>
+      <div class="fcard reveal">
+        <div class="fh">Early GenAI text mining</div>
+        <div class="fb">Built a <b>PySpark + LLM-API</b> pipeline (distributed GPT / Claude calls) extracting structured fields from unstructured analyst notes &mdash; an early prototype of the production agents above.</div>
       </div>
     </div>
   </div>
@@ -597,22 +573,21 @@
         <div class="chips">
           <span class="chip">Anthropic Claude SDK</span><span class="chip">OpenAI SDK</span>
           <span class="chip">Multi-Agent Orchestration</span><span class="chip">MCP Servers</span>
-          <span class="chip">Tool Use / Function Calling</span><span class="chip">RAG</span>
-          <span class="chip">LangChain</span><span class="chip">LangGraph</span>
+          <span class="chip">Graph-RAG / Self-RAG</span><span class="chip">Semantic Routing</span>
+          <span class="chip">Tool Use / Function Calling</span><span class="chip">Guardrails &amp; Self-Correction</span>
           <span class="chip">Structured Outputs (JSON Schema)</span>
-          <span class="chip">LLM-as-Judge &amp; Golden-Set Eval</span>
+          <span class="chip">RAGAS / LLM-as-Judge Eval</span>
           <span class="chip">Advanced Prompt Engineering</span>
         </div>
       </div>
       <div class="stack-grp reveal">
         <h4>Data Science &amp; ML</h4>
         <div class="chips">
-          <span class="chip">XGBoost</span><span class="chip">Random Forest</span>
-          <span class="chip">scikit-learn</span><span class="chip">A/B &amp; Bayesian A/B Testing</span>
-          <span class="chip">Causal Inference</span><span class="chip">CUPED</span>
-          <span class="chip">Regression Discontinuity</span><span class="chip">Funnel &amp; Cohort Analysis</span>
-          <span class="chip">Anomaly Detection</span><span class="chip">Clustering</span>
-          <span class="chip">NLP / Text Mining</span>
+          <span class="chip">XGBoost</span><span class="chip">Random Forest</span><span class="chip">GBDT</span>
+          <span class="chip">scikit-learn</span><span class="chip">A/B Experimentation</span>
+          <span class="chip">CUPED</span><span class="chip">Difference-in-Differences</span>
+          <span class="chip">Regression Discontinuity</span><span class="chip">Stratified Holdout</span>
+          <span class="chip">Anomaly &amp; Drift Detection</span><span class="chip">NLP / Text Mining</span>
         </div>
       </div>
       <div class="stack-grp reveal">
@@ -620,8 +595,8 @@
         <div class="chips">
           <span class="chip">Python</span><span class="chip">asyncio</span><span class="chip">Flask</span>
           <span class="chip">PySpark</span><span class="chip">Pandas</span>
-          <span class="chip">REST APIs</span><span class="chip">Airflow</span>
-          <span class="chip">Java</span><span class="chip">Docker</span><span class="chip">Git</span>
+          <span class="chip">Java (Drools)</span><span class="chip">REST APIs</span><span class="chip">Airflow</span>
+          <span class="chip">DynamoDB</span><span class="chip">Docker</span><span class="chip">Git</span>
         </div>
       </div>
       <div class="stack-grp reveal">
@@ -630,7 +605,7 @@
           <span class="chip">SQL (window fns, CTEs, joins)</span>
           <span class="chip">Databricks / Spark</span><span class="chip">Snowflake</span>
           <span class="chip">Redshift</span><span class="chip">Databricks SDK</span>
-          <span class="chip">Tableau</span><span class="chip">PowerBI</span><span class="chip">Splunk SPL</span>
+          <span class="chip">Splunk SPL</span><span class="chip">Tableau</span><span class="chip">QuickSight</span>
         </div>
       </div>
     </div>
@@ -641,7 +616,7 @@
 <footer id="contact">
   <div class="wrap">
     <p style="font-size:18px;color:var(--text);font-weight:700;margin-bottom:8px;">Kevin Guo</p>
-    <p>Senior Data / AI Scientist &middot; AI Agent Engineering</p>
+    <p>Senior Decision Scientist &middot; AI Agent Engineering &middot; Payments Risk</p>
     <p style="margin-top:14px;">
       <a href="mailto:zijianguo83@gmail.com">zijianguo83@gmail.com</a> &nbsp;·&nbsp;
       <a href="https://www.linkedin.com/in/zijian-guo-84a9a824b/">LinkedIn</a> &nbsp;·&nbsp;
